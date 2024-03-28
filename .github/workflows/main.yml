@@ -38,8 +38,43 @@ jobs:
   test:
     runs-on: ubuntu-latest
     environment: test
+    if: github.event_name == 'workflow_dispatch'
     name: Test
     needs: [build]
     steps: 
       - run: echo "Testing..."
+  load-test:
+    runs-on: ubuntu-latest
+    environment: load-test
+    if: github.event_name == 'workflow_dispatch'
+    name: Load test
+    needs: [build]
+    steps: 
+      - run: |
+          echo "Testing..."
+          sleep 15
+  production:
+    runs-on: ubuntu-latest
+    environment: 
+      name: production
+      url: https://writeabout.net
+    if: github.event.inputs.environment == 'Production'
+    name: Production deployment
+    needs: [test, load-test]
+    steps: 
+      - run: |
+          echo "Deploying step 1..."
+          sleep 5
+      - run: |
+          echo "Deploying step 2..."
+          sleep 5
+      - run: |
+          echo "Deploying step 3..."
+          sleep 5
+      - run: |
+          echo "Deploying step 4..."
+          sleep 5
+      - run: |
+          echo "Deploying step 5..."
+          sleep 5
       
