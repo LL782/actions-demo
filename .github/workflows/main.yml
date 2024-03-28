@@ -22,7 +22,7 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     steps:
       - run: |
@@ -35,3 +35,11 @@ jobs:
         run: |
           echo "The repository ${{ github.repository }} contains the folling files:"
           tree
+  test:
+    runs-on: ubuntu-latest
+    environment: test
+    name: Test
+    needs: [build]
+    steps: 
+      - run: echo "Testing..."
+      
